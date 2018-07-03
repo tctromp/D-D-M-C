@@ -18,7 +18,8 @@ public class DDMCPanel extends JPanel{
 
 	private DDMCHandler handler;
 	private Mouse mouse;
-
+	private boolean isUpdating = false;
+	
 	public DDMCPanel(DDMCHandler handler) {
 		this.handler = handler;
 		
@@ -81,6 +82,8 @@ public class DDMCPanel extends JPanel{
 		
 		// Update screen here
 		
+		isUpdating = true;
+		
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g2d.clearRect(0, 0, this.getWidth(), this.getHeight());
@@ -102,6 +105,8 @@ public class DDMCPanel extends JPanel{
 			g2d.drawString("Mouse Pos: X = " + x + " Y= " + y, 5, 15);
 			g2d.drawString("Mouse Clicked: " + mouse.isPressed(), 5, 25);
 			
+			g2d.drawString("Delta Time: " + handler.deltaTime(), 5, 35);
+			
 			String s = "[";
 			
 			for(int i : handler.getKeyboard().getPressedKeys()) {
@@ -109,12 +114,16 @@ public class DDMCPanel extends JPanel{
 			}
 			s += ("]");
 			
-			g2d.drawString("Keys Pressed: " + s, 5, 35);
+			g2d.drawString("Keys Pressed: " + s, 5, 45);
 
 		}
 		
+		isUpdating = false;
 		
-		
+	}
+	
+	public boolean isUpdating() {
+		return isUpdating;
 	}
 	
 }

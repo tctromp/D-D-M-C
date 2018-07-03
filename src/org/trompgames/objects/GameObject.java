@@ -8,11 +8,11 @@ import org.trompgames.utils.Vector2;
 
 public abstract class GameObject {
 
-	private Vector2 loc;
+	private Vector2 loc = new Vector2(0, 0);
 	private boolean isVisible;
 	
 	private BufferedImage image;
-	private double scale = 1;
+	private double scale = 3;
 		
 	private DDMCHandler handler;
 	

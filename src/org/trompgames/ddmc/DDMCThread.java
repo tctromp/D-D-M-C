@@ -2,10 +2,11 @@ package org.trompgames.ddmc;
 
 public class DDMCThread extends Thread{
 	
-	public DDMCHandler handler;
-	public double fps;
-	public double fpms;
-	public long time;
+	private DDMCHandler handler;
+	private double fps;
+	private double fpms;
+	private long time;
+	private long lastTime;
 
 	
 	public DDMCThread(DDMCHandler handler, double fps) {
@@ -17,15 +18,22 @@ public class DDMCThread extends Thread{
 	@Override
 	public void run() {
 		
+		System.out.println("FPMS: " + fpms);
+		
 		time = System.currentTimeMillis();
+		
 		while(true) {
-			
-			if(!(time + fpms < System.currentTimeMillis())) continue;
-			
+			if(1.0 * System.currentTimeMillis() < time + fpms || handler.getFrame().getPanel().isUpdating()) continue;
+
+			lastTime = time;
+
 			handler.update();
 			
 			handler.getFrame().getPanel().repaint();
 
+			
+			
+			//System.out.println(1.0 * (System.currentTimeMillis() - time));
 			time = System.currentTimeMillis();
 			
 		}
@@ -33,7 +41,7 @@ public class DDMCThread extends Thread{
 	}
 	
 	public long getLastTime() {
-		return time;
+		return lastTime;
 	}
 	
 }
