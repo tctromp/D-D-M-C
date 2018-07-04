@@ -13,7 +13,7 @@ public class DDMCMain {
 		
 		int width = 1920;
 		int height = 1080;
-		double fps = 60;
+		double fps = 60 * 2;
 		
 		double scale = 4;
 

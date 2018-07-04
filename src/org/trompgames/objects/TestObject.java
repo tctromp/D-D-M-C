@@ -51,7 +51,7 @@ public class TestObject extends GameObject{
 					
 					double dist = this.getLoc().distance(target);
 					
-					double alpha = (3) / dist;
+					double alpha = 200 * handler.deltaTime() / dist;
 					//System.out.println(alpha);
 					if(alpha > 1) alpha = 1;
 					
