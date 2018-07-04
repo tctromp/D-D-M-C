@@ -24,9 +24,8 @@ public class Torch extends GameObject{
 	}
 	
 	public Torch(DDMCHandler handler, Vector2 loc) {
-		super(handler);
-		this.setLocation(loc);
-
+		super(handler, loc);
+		this.setImageOffset(new Vector2(4, -12));
 	}
 
 	private int tile = 0;

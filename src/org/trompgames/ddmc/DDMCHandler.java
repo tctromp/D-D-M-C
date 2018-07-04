@@ -1,6 +1,5 @@
 package org.trompgames.ddmc;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,12 +27,14 @@ public class DDMCHandler {
 	private ArrayList<GameObject> toRemove = new ArrayList<>();
 	private ArrayList<GameObject> toAdd = new ArrayList<>();
 	
+	private int gridWidth;
+	private int gridHeight;
 	
-	public DDMCHandler() {
+	public DDMCHandler(int width, int height, double fps, int gridWidth, int gridHeight) {
 		
-		int width = 1920/2;
-		int height = 1080/2;
-		double fps = 60;
+		this.gridWidth = gridWidth;
+		this.gridHeight = gridHeight;
+
 		
 		try {
 			tileset = new Tileset(ImageIO.read((new File("0x72_16x16DungeonTileset.v4.png"))));
@@ -91,6 +92,10 @@ public class DDMCHandler {
 		return keyboard;
 	}
 	
+	public void setDebug(boolean debug) {
+		this.debug = debug;
+	}
+	
 	public void setKeyboard(Keyboard keyboard) {
 		this.keyboard = keyboard;
 	}
@@ -109,5 +114,13 @@ public class DDMCHandler {
 	
 	public Tileset getTileset() {
 		return tileset;
+	}
+	
+	public int getGridWidth() {
+		return gridWidth;
+	}
+	
+	public int getGridHeight() {
+		return gridHeight;
 	}
 }

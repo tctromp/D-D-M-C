@@ -42,4 +42,21 @@ public class Vector2 {
 		return this;
 	}
 	
+	public Vector2 lerp(Vector2 v2, double alpha) {
+		return this.clone().mult(1-alpha).add(v2.clone().mult(alpha));
+	}
+	
+	public double distance(Vector2 v2) {
+		return Math.sqrt(Math.pow(v2.x - x, 2) + Math.pow(v2.y - y, 2));
+	}
+	
+	public Vector2 clone() {
+		return new Vector2(x, y);
+	}
+	
+	@Override
+	public String toString() {
+		return "X: " + x + " Y: " + y;
+	}
+	
 }

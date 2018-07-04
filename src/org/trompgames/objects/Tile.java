@@ -9,11 +9,10 @@ public class Tile extends GameObject{
 	
 	//TODO: add collision object
 	
-	public Tile(DDMCHandler handler, DungeonTile tile, Vector2 loc) {
-		super(handler);
+	public Tile(DDMCHandler handler, DungeonTile tile, Vector2 gridLoc) {
+		super(handler, gridLoc);
 		this.tile = tile;
 		this.setImage(tile.getImage());
-		this.setLocation(loc);
 	}
 
 	public DungeonTile getTile() {

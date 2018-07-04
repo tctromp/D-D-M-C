@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 import org.trompgames.ddmc.DDMCHandler;
+import org.trompgames.ddmc.DDMCMain;
 import org.trompgames.objects.GameObject;
 import org.trompgames.utils.Mouse;
 import org.trompgames.utils.Vector2;
@@ -88,6 +89,17 @@ public class DDMCPanel extends JPanel{
 		
 		g2d.clearRect(0, 0, this.getWidth(), this.getHeight());
 		
+		if(handler.debugMode()) {
+			g2d.setColor(Color.gray);
+			
+			int scale = 4;
+			int offset = 64;
+			for(int i = 0; i < handler.getGridWidth(); i++) {
+				for(int j = 0; j < handler.getGridHeight(); j++) {
+					g2d.drawRect(offset + i * 16 * scale, offset + j * 16 * scale, 16 * scale, 16 * scale);
+				}
+			}
+		}
 		
 		for(GameObject obj : handler.getGameObjects()) {
 			obj.draw(g2d);
@@ -101,11 +113,17 @@ public class DDMCPanel extends JPanel{
 			int x = (int) mouse.getLoc().getX();
 			int y = (int) mouse.getLoc().getY();
 
+			Vector2 grid = DDMCMain.screenToGridCords(x, y, 16, 64, 4);
+			
+			int gridX = (int) grid.getX();
+			int gridY = (int) grid.getY();
 			
 			g2d.drawString("Mouse Pos: X = " + x + " Y= " + y, 5, 15);
-			g2d.drawString("Mouse Clicked: " + mouse.isPressed(), 5, 25);
+			g2d.drawString("Mouse Grid: X = " + gridX + " Y= " + gridY, 5, 25);
+
+			g2d.drawString("Mouse Clicked: " + mouse.isPressed(), 5, 35);
 			
-			g2d.drawString("Delta Time: " + handler.deltaTime(), 5, 35);
+			g2d.drawString("Delta Time: " + handler.deltaTime(), 5, 45);
 			
 			String s = "[";
 			
@@ -114,8 +132,10 @@ public class DDMCPanel extends JPanel{
 			}
 			s += ("]");
 			
-			g2d.drawString("Keys Pressed: " + s, 5, 45);
+			g2d.drawString("Keys Pressed: " + s, 5, 55);
 
+			
+			
 		}
 		
 		isUpdating = false;
