@@ -23,7 +23,7 @@ public class DDMCMain {
 
 		
 		gridWidth = 28;
-		gridHeight = 14;
+		gridHeight = 14; 
 		
 		DDMCHandler handler = new DDMCHandler(width, height, fps, gridWidth, gridHeight);
 		
