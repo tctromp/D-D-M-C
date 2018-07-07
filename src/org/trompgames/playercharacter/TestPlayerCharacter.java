@@ -30,52 +30,7 @@ public class TestPlayerCharacter extends PlayerCharacter{
 		double radius = 18 * 4; // 4 is the scale
 		double speed = 1;
 		
-		GameObject obj = this;	
-		
-		for(int i = 0; i < totalParticles; i++) {
-			
-			final int c = i;
-			
-			Particle p = (new Particle(handler, gridLoc, DungeonTile.SMALLBLUEPARTICLE) {
-				
-				double theta = c * particleSpread;
-				double theta2 = c * (particleSpread + 2);
-
-				@Override
-				public void update() {
-					
-					theta += handler.deltaTime() * speed;
-					theta2 += handler.deltaTime() * (speed + 3);
-
-					double midX = obj.getLoc().getX() + 8 * 4 - 4; // Subtracting 4 (scale = 4) to center the particle
-					double midY = obj.getLoc().getY() + 8 * 4 - 4;
-					
-					double targetX = midX + radius * Math.cos(theta);
-					double targetY = midY + radius * Math.sin(theta); //theta2
-					
-					Vector2 target = new Vector2(targetX, targetY);
-					
-					double dist = this.getLoc().distance(target);
-					
-					//double alpha = 200 * handler.deltaTime() / dist;
-					double alpha = handler.deltaTime() * Math.sqrt(dist) + 0.01;
-
-					
-					//System.out.println(alpha);
-					if(alpha > 1) alpha = 1;
-					
-					Vector2 newLoc = this.getLoc().lerp(target, alpha);
-					
-					
-					this.setLocation(newLoc);		
-					
-				}
-				
-			});
-			particles.add(p);
-			handler.addGameObject(p);
-		}
-				
+		resetParticles(totalParticles, particleSpread, radius, speed);
 	}
 
 
@@ -138,7 +93,56 @@ public class TestPlayerCharacter extends PlayerCharacter{
 	@Override
 	public void onClick() {
 		System.out.println("Clicky Player");
+		
+		int totalParticles = particles.size()-1;
+		resetParticles(totalParticles, 2 * Math.PI / totalParticles, 18*4, 1);
 	}
-
-
+	
+	// Simple way to externally effect the number of shown particles (e)
+	public void resetParticles(int totalParticles, double particleSpread, double radius, double speed) {
+		particles = new ArrayList<>(); // reset particle storage (e)
+		GameObject obj = this;
+		for(int i = 0; i < totalParticles; i++) {
+			final int c = i;
+			
+			Particle p = (new Particle(handler, gridLoc, DungeonTile.SMALLBLUEPARTICLE) {
+				
+				double theta = c * particleSpread;
+				double theta2 = c * (particleSpread + 2);
+	
+				@Override
+				public void update() {
+					
+					theta += handler.deltaTime() * speed;
+					theta2 += handler.deltaTime() * (speed + 3);
+	
+					double midX = obj.getLoc().getX() + 8 * 4 - 4; // Subtracting 4 (scale = 4) to center the particle
+					double midY = obj.getLoc().getY() + 8 * 4 - 4;
+					
+					double targetX = midX + radius * Math.cos(theta);
+					double targetY = midY + radius * Math.sin(theta); //theta2
+					
+					Vector2 target = new Vector2(targetX, targetY);
+					
+					double dist = this.getLoc().distance(target);
+					
+					//double alpha = 200 * handler.deltaTime() / dist;
+					double alpha = handler.deltaTime() * Math.sqrt(dist) + 0.01;
+	
+					
+					//System.out.println(alpha);
+					if(alpha > 1) alpha = 1;
+					
+					Vector2 newLoc = this.getLoc().lerp(target, alpha);
+					
+					
+					this.setLocation(newLoc);		
+					
+				}
+				
+			});
+			particles.add(p);
+			handler.addGameObject(p);
+		}
+	}
 }
