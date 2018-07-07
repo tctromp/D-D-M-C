@@ -22,9 +22,17 @@ public class DDMCThread extends Thread{
 		
 		time = System.currentTimeMillis();
 		
+		double startTime = System.currentTimeMillis();
+		
 		while(true) {
-			if(1.0 * System.currentTimeMillis() < time + fpms || handler.getFrame().getPanel().isUpdating()) continue;
+			if(!handler.gameLoopEnabled() && !(System.currentTimeMillis() <= startTime + 250)) {				
+				handler.startGameLoop();
+			}
+			
+			if(1.0 * System.currentTimeMillis() <= time + fpms || handler.getFrame().getPanel().isUpdating()) continue;
 
+			
+			
 			lastTime = time;
 
 			handler.update();

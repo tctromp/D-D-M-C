@@ -83,11 +83,16 @@ public class DDMCPanel extends JPanel{
 		
 		// Update screen here
 		
+		if(!handler.gameLoopEnabled()) return;
+
 		isUpdating = true;
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g2d.clearRect(0, 0, this.getWidth(), this.getHeight());
+		//g2d.clearRect(0, 0, this.getWidth(), this.getHeight());
+		
+		g2d.setColor(new Color(28, 17, 23));
+		g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 		if(handler.debugMode()) {
 			g2d.setColor(Color.gray);
@@ -107,13 +112,13 @@ public class DDMCPanel extends JPanel{
 		
 		
 		if(handler.debugMode()) {
-			g2d.setColor(Color.BLACK);
+			g2d.setColor(Color.white);
 			
 			
 			int x = (int) mouse.getLoc().getX();
 			int y = (int) mouse.getLoc().getY();
 
-			Vector2 grid = DDMCMain.screenToGridCords(x, y, 16, 64, 4);
+			Vector2 grid = DDMCHandler.screenToGridCords(x, y);
 			
 			int gridX = (int) grid.getX();
 			int gridY = (int) grid.getY();
@@ -125,6 +130,10 @@ public class DDMCPanel extends JPanel{
 			
 			g2d.drawString("Delta Time: " + handler.deltaTime(), 5, 45);
 			
+			
+			
+			g2d.drawString("FPS Time: " + String.format("%.2f", 1.0/handler.deltaTime()), 5, 55);
+
 			String s = "[";
 			
 			for(int i : handler.getKeyboard().getPressedKeys()) {
@@ -132,7 +141,7 @@ public class DDMCPanel extends JPanel{
 			}
 			s += ("]");
 			
-			g2d.drawString("Keys Pressed: " + s, 5, 55);
+			g2d.drawString("Keys Pressed: " + s, 5, 65);
 
 			
 			

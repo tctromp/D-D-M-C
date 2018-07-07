@@ -1,7 +1,13 @@
 package org.trompgames.utils;
 
-public class Mouse {
+import java.util.ArrayList;
 
+import org.trompgames.ddmc.DDMCHandler;
+
+public class Mouse {
+	
+	private ArrayList<MouseListener> listeners = new ArrayList<MouseListener>();
+	
 	private boolean isPressed;
 	private Vector2 loc;
 	
@@ -18,13 +24,31 @@ public class Mouse {
 		return loc;
 	}
 	
+	public Vector2 getGridLoc() {
+		return DDMCHandler.screenToGridCords(loc.getX(), loc.getY());
+	}
+	
 	public void setPressed(boolean isPressed) {
 		this.isPressed = isPressed;
+		
+		for(MouseListener listener : listeners) {
+			if(isPressed)
+				listener.onPress(this);
+			else
+				listener.onRelease(this);
+		}
+		
+	}
+	
+	public void addMouseListener(MouseListener listener) {
+		listeners.add(listener);
 	}
 	
 	public void setLocation(Vector2 loc) {
 		this.loc = loc;
 	}
+	
+	
 	
 	
 }

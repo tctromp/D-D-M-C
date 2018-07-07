@@ -9,21 +9,30 @@ import org.trompgames.utils.Vector2;
 
 public abstract class GameObject {
 
-	private Vector2 loc = new Vector2(0, 0);
-	private Vector2 gridLoc;
-	private boolean isVisible;
+	protected Vector2 loc = new Vector2(0, 0);
+	protected Vector2 gridLoc;
+	protected boolean isVisible;
 	
-	private BufferedImage image;
-	private double scale = 4;
+	protected BufferedImage image;
+	protected double scale = 4;
 		
-	private DDMCHandler handler;
+	protected DDMCHandler handler;
 	
-	private Vector2 imageOffset = new Vector2(0, 0);
+	protected Vector2 imageOffset = new Vector2(0, 0);
+	
+	protected int layer = 0;
+	
+	public GameObject(DDMCHandler handler, Vector2 gridLoc, int layer) {
+		this.handler = handler;
+		this.gridLoc = gridLoc;
+		this.layer = layer;
+		this.loc = DDMCHandler.gridToScreenCords(gridLoc.getX(), gridLoc.getY());
+	}
 	
 	public GameObject(DDMCHandler handler, Vector2 gridLoc) {
 		this.handler = handler;
 		this.gridLoc = gridLoc;
-		this.loc = DDMCMain.gridToScreenCords(gridLoc.getX(), gridLoc.getY(), 16, 64, 4);
+		this.loc = DDMCHandler.gridToScreenCords(gridLoc.getX(), gridLoc.getY());
 	}
 	
 	public abstract void update();
@@ -86,7 +95,15 @@ public abstract class GameObject {
 	
 	public void setGridLoc(Vector2 gridLoc) {
 		this.gridLoc = gridLoc;
-		this.loc = DDMCMain.gridToScreenCords(gridLoc.getX(), gridLoc.getY(), 16, 64, 4);
+		this.loc = DDMCHandler.gridToScreenCords(gridLoc.getX(), gridLoc.getY());
+	}
+	
+	public int getLayer() {
+		return layer;
+	}
+	
+	public void setLayer(int layer) {
+		this.layer = layer;
 	}
 	
 }

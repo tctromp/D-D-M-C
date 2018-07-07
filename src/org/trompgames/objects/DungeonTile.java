@@ -2,11 +2,11 @@ package org.trompgames.objects;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import org.trompgames.utils.Tileset;
+import org.trompgames.utils.Vector2;
 
 public enum DungeonTile {	
 	
@@ -23,25 +23,26 @@ public enum DungeonTile {
 	RIGHTWALL(32, 16, 16, 16),
 	
 	WALLFLOOR1(0, 32, 16, 16),
-	WALLFLOOR2(0, 48, 16, 16),
-	WALLFLOOR3(0, 64, 16, 16),
+	WALLFLOOR2(16, 32, 16, 16),
+	WALLFLOOR3(32, 32, 16, 16),
 
 	BOT1(128, 0, 16, 16),
 	BOT2(112, 16, 16, 16),
 	BOT3(128, 16, 16, 16),
 
-	TORCHOFF(116, 150, 8, 24),
-	TORCHON1(132, 150, 8, 24),
-	TORCHON2(148, 150, 8, 24),
-	TORCHON3(164, 150, 8, 24),
-	TORCHON4(180, 150, 8, 24),
-	TORCHON5(196, 150, 8, 24),
-	TORCHON6(212, 150, 8, 24),
-	TORCHON7(228, 150, 8, 24),
-	TORCHON8(244, 150, 8, 24),
+	TORCHOFF(116, 150, 8, 24, new Vector2(1, -3)),
+	TORCHON1(132, 150, 8, 24, new Vector2(1, -3)),
+	TORCHON2(148, 150, 8, 24, new Vector2(1, -3)),
+	TORCHON3(164, 150, 8, 24, new Vector2(1, -3)),
+	TORCHON4(180, 150, 8, 24, new Vector2(1, -3)),
+	TORCHON5(196, 150, 8, 24, new Vector2(1, -3)),
+	TORCHON6(212, 150, 8, 24, new Vector2(1, -3)),
+	TORCHON7(228, 150, 8, 24, new Vector2(1, -3)),
+	TORCHON8(244, 150, 8, 24, new Vector2(1, -3)),
 
 	DARKLEFT(160, 112, 32, 32),
-	
+	DARKRIGHT(192, 112, 32, 32),
+
 	PLAINTILE(32, 48, 16, 16),
 	
 	
@@ -68,7 +69,7 @@ public enum DungeonTile {
 			tileset = new Tileset(ImageIO.read((new File("0x72_16x16DungeonTileset.v4.png"))));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.err.println("ERROR: Failed to load Dungeon Tileset");
 		}
 		
@@ -80,6 +81,8 @@ public enum DungeonTile {
 	
 	private int width;
 	private int height;
+	
+	private Vector2 offset = new Vector2(0, 0);
 
 	private BufferedImage image = null;
 		
@@ -89,6 +92,16 @@ public enum DungeonTile {
 		
 		this.width = width;
 		this.height = height;		
+	}
+	
+	DungeonTile(int x, int y, int width, int height, Vector2 offset){
+		this.x = x;
+		this.y = y;
+		
+		this.width = width;
+		this.height = height;	
+		
+		this.offset = offset;
 	}
 	
 	public BufferedImage getImage() {
@@ -118,6 +131,9 @@ public enum DungeonTile {
 		return height;
 	}
 	
+	public Vector2 getOffset() {
+		return offset;
+	}
 	
 	
 }

@@ -6,11 +6,14 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import org.trompgames.mapeditor.MapEditor;
 import org.trompgames.objects.GameObject;
+import org.trompgames.objects.Tile;
 import org.trompgames.swing.DDMCFrame;
 import org.trompgames.utils.Keyboard;
 import org.trompgames.utils.Mouse;
 import org.trompgames.utils.Tileset;
+import org.trompgames.utils.Vector2;
 
 public class DDMCHandler {
 
@@ -30,6 +33,14 @@ public class DDMCHandler {
 	private int gridWidth;
 	private int gridHeight;
 	
+	private boolean gameLoopEnabled = false;
+	
+	private MapEditor mapEditor;
+	
+	public static int TILEWIDTH = 16;
+	public static int OFFSET = 64;
+	public static double SCALE = 4;
+	
 	public DDMCHandler(int width, int height, double fps, int gridWidth, int gridHeight) {
 		
 		this.gridWidth = gridWidth;
@@ -47,21 +58,64 @@ public class DDMCHandler {
 		
 		frame = new DDMCFrame(this, width, height);
 		
+		
+		this.mapEditor = new MapEditor(this);
+		
+		
 		thread = new DDMCThread(this, fps);
 		thread.start();
-		
+		//this.startGameLoop();
+	}
+	
+	public void startGameLoop() {
+		gameLoopEnabled = true;
+	}
+	
+	public boolean gameLoopEnabled() {
+		return gameLoopEnabled;
 	}
 	
 	public void update() {
 		objects.removeAll(toRemove);
-		objects.addAll(toAdd);
+		
+		for(GameObject obj : toAdd) {
+			int i;
+			for(i = 0; i < objects.size(); i++) {
+				GameObject c = objects.get(i);
+				//System.out.println(obj.getLayer());
+				if(obj.getLayer() < c.getLayer()) break;
+							
+			}
+			
+			objects.add(i, obj);			
+		}
+		
+		
 		
 		toAdd.clear();
 		toRemove.clear();
 		
 		for(GameObject obj : objects) {
 			obj.update();
+
 		}
+	}
+	
+	public boolean isWalkable(Vector2 gridLoc) {	
+		for(GameObject obj : objects) {
+			if(!(obj instanceof Tile)) continue;
+			Tile tile = (Tile) obj;
+			if(tile.isWalkable() && tile.getGridLoc().equals(gridLoc)) return true;
+		}
+		return false;
+	}
+	
+	public static Vector2 gridToScreenCords(double x, double y) {
+		return new Vector2(OFFSET + x * TILEWIDTH * SCALE, OFFSET + y * TILEWIDTH * SCALE);
+	}
+	
+	public static Vector2 screenToGridCords(double x, double y) {
+		return new Vector2((int) ((x - OFFSET) / (TILEWIDTH * SCALE)), (int) ((y - OFFSET) / (TILEWIDTH * SCALE)));
 	}
 	
 	public void addGameObject(GameObject obj) {

@@ -9,9 +9,12 @@ public class Tile extends GameObject{
 	
 	//TODO: add collision object
 	
-	public Tile(DDMCHandler handler, DungeonTile tile, Vector2 gridLoc) {
+	private boolean isWalkable;
+	
+	public Tile(DDMCHandler handler, DungeonTile tile, Vector2 gridLoc, boolean isWalkable) {
 		super(handler, gridLoc);
 		this.tile = tile;
+		this.isWalkable = isWalkable;
 		this.setImage(tile.getImage());
 	}
 
@@ -19,6 +22,10 @@ public class Tile extends GameObject{
 		return tile;
 	}
 
+	public boolean isWalkable() {
+		return isWalkable;
+	}
+	
 	@Override
 	public void update() {
 		

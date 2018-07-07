@@ -1,24 +1,28 @@
-package org.trompgames.objects;
+package org.trompgames.playercharacter;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import org.trompgames.ddmc.DDMCHandler;
-import org.trompgames.ddmc.DDMCMain;
+import org.trompgames.objects.DungeonTile;
+import org.trompgames.objects.GameObject;
+import org.trompgames.objects.Particle;
+import org.trompgames.objects.TestObject;
 import org.trompgames.utils.Keyboard;
+import org.trompgames.utils.Layer;
 import org.trompgames.utils.Mouse;
 import org.trompgames.utils.MouseListener;
 import org.trompgames.utils.Vector2;
 
-public class TestObject extends GameObject{
+public class TestPlayerCharacter extends PlayerCharacter{
 
 	private ArrayList<Particle> particles = new ArrayList<>();
-	private MouseListener mouseListener;
 	
-	public TestObject(DDMCHandler handler, Vector2 gridLoc) {
-		super(handler, gridLoc, 2);
+	public TestPlayerCharacter(DDMCHandler handler, Vector2 gridLoc, int health) {
+		super(handler, gridLoc, health);
 
-		//this.setImage(handler.getTileset().getImage(82, 176, 13, 16));
+		this.setLayer(Layer.PLAYER.getLayerId());
+		
 		this.setImage(DungeonTile.BLUEMAGE.getImage());
 		
 		int totalParticles = 5;		
@@ -27,7 +31,6 @@ public class TestObject extends GameObject{
 		double speed = 1;
 		
 		GameObject obj = this;	
-
 		
 		for(int i = 0; i < totalParticles; i++) {
 			
@@ -44,7 +47,7 @@ public class TestObject extends GameObject{
 					theta += handler.deltaTime() * speed;
 					theta2 += handler.deltaTime() * (speed + 3);
 
-					double midX = obj.getLoc().getX() + 8 * 4 - 4;
+					double midX = obj.getLoc().getX() + 8 * 4 - 4; // Subtracting 4 (scale = 4) to center the particle
 					double midY = obj.getLoc().getY() + 8 * 4 - 4;
 					
 					double targetX = midX + radius * Math.cos(theta);
@@ -72,40 +75,9 @@ public class TestObject extends GameObject{
 			particles.add(p);
 			handler.addGameObject(p);
 		}
-		
-		
-		
-		
-		this.addMouseListener();
-		
+				
 	}
-	
-	
-	private void addMouseListener() {
-			
-		 TestObject obj = this;
-		 
-		 mouseListener = new MouseListener() {
 
-			@Override
-			public void onPress(Mouse mouse) {
-				Vector2 screenLoc = mouse.getLoc();
-				Vector2 gridLoc = DDMCHandler.screenToGridCords(screenLoc.getX(), screenLoc.getY());
-				
-				
-			
-			}
-
-			@Override
-			public void onRelease(Mouse mouse) {
-				
-			}
-			
-		};
-		
-		this.getHandler().getMouse().addMouseListener(mouseListener);
-		
-	}
 
 	private long lastTime = System.currentTimeMillis();
 	
@@ -160,10 +132,13 @@ public class TestObject extends GameObject{
 			//this.setGridLoc(this.getGridLoc().add(x, y));
 			lastTime = System.currentTimeMillis();
 		}
-		
-		
-		//this.setLocation(this.getLoc().add(x * deltaTime * speed, y * deltaTime * speed));
-		
+				
 	}
+	
+	@Override
+	public void onClick() {
+		System.out.println("Clicky Player");
+	}
+
 
 }

@@ -1,13 +1,15 @@
-package org.trompgames.objects;
+package org.trompgames.monstercharacter;
 
 import org.trompgames.ddmc.DDMCHandler;
 import org.trompgames.ddmc.DDMCMain;
+import org.trompgames.objects.DungeonTile;
+import org.trompgames.objects.GameObject;
 import org.trompgames.utils.Vector2;
 
-public class Bat extends GameObject{
+public class Bat extends MonsterCharacter{
 
-	public Bat(DDMCHandler handler, Vector2 loc) {
-		super(handler, loc);
+	public Bat(DDMCHandler handler, Vector2 loc, int health) {
+		super(handler, loc, health);
 		this.setImage(DungeonTile.BAT.getImage());
 	}
 
@@ -27,9 +29,15 @@ public class Bat extends GameObject{
 		double x = gridLoc.getX();
 		double y = gridLoc.getY();
 		
-		this.setLocation(DDMCMain.gridToScreenCords(x, y, 16, 64, 4).add((amplitude + 2) * Math.cos(angle2), amplitude * Math.sin(angle)));
+		this.setLocation(DDMCHandler.gridToScreenCords(x, y).add((amplitude + 2) * Math.cos(angle2), amplitude * Math.sin(angle)));
 		
 		
+	}
+
+	@Override
+	public void onClick() {
+		// TODO Auto-generated method stub
+		System.out.println("Clicky bat");
 	}
 
 }
