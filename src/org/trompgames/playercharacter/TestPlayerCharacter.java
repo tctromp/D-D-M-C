@@ -94,6 +94,10 @@ public class TestPlayerCharacter extends PlayerCharacter{
 	public void onClick() {
 		System.out.println("Clicky Player");
 		
+		
+		for(GameObject obj : particles) {
+			handler.removeGameObject(obj);
+		}
 		int totalParticles = particles.size()-1;
 		resetParticles(totalParticles, 2 * Math.PI / totalParticles, 18*4, 1);
 	}
