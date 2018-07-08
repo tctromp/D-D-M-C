@@ -7,6 +7,7 @@ import org.trompgames.ddmc.DDMCHandler;
 import org.trompgames.objects.DungeonTile;
 import org.trompgames.objects.GameObject;
 import org.trompgames.objects.Particle;
+import org.trompgames.objects.ParticleRing;
 import org.trompgames.objects.TestObject;
 import org.trompgames.utils.Keyboard;
 import org.trompgames.utils.Layer;
@@ -18,6 +19,8 @@ public class TestPlayerCharacter extends PlayerCharacter{
 
 	private ArrayList<Particle> particles = new ArrayList<>();
 	
+	private ParticleRing mana;
+	
 	public TestPlayerCharacter(DDMCHandler handler, Vector2 gridLoc, int health) {
 		super(handler, gridLoc, health);
 
@@ -26,11 +29,11 @@ public class TestPlayerCharacter extends PlayerCharacter{
 		this.setImage(DungeonTile.BLUEMAGE.getImage());
 		
 		int totalParticles = 5;		
-		double particleSpread = 2 * Math.PI / totalParticles;
 		double radius = 18 * 4; // 4 is the scale
 		double speed = 1;
 		
-		resetParticles(totalParticles, particleSpread, radius, speed);
+		//resetParticles(totalParticles, particleSpread, radius, speed);
+		mana = new ParticleRing(this, totalParticles, radius, speed);
 	}
 
 
@@ -93,17 +96,19 @@ public class TestPlayerCharacter extends PlayerCharacter{
 	@Override
 	public void onClick() {
 		System.out.println("Clicky Player");
+	
+		//int totalParticles = particles.size()-1;
+		//resetParticles(totalParticles, 2 * Math.PI / totalParticles, 18*4, 1);
 		
-		
-		for(GameObject obj : particles) {
-			handler.removeGameObject(obj);
-		}
-		int totalParticles = particles.size()-1;
-		resetParticles(totalParticles, 2 * Math.PI / totalParticles, 18*4, 1);
+		mana.addParticle();
 	}
+	
 	
 	// Simple way to externally effect the number of shown particles (e)
 	public void resetParticles(int totalParticles, double particleSpread, double radius, double speed) {
+		for(GameObject obj : particles) {
+			handler.removeGameObject(obj);
+		}
 		particles = new ArrayList<>(); // reset particle storage (e)
 		GameObject obj = this;
 		for(int i = 0; i < totalParticles; i++) {
@@ -112,14 +117,12 @@ public class TestPlayerCharacter extends PlayerCharacter{
 			Particle p = (new Particle(handler, gridLoc, DungeonTile.SMALLBLUEPARTICLE) {
 				
 				double theta = c * particleSpread;
-				double theta2 = c * (particleSpread + 2);
 	
 				@Override
 				public void update() {
 					
 					theta += handler.deltaTime() * speed;
-					theta2 += handler.deltaTime() * (speed + 3);
-	
+
 					double midX = obj.getLoc().getX() + 8 * 4 - 4; // Subtracting 4 (scale = 4) to center the particle
 					double midY = obj.getLoc().getY() + 8 * 4 - 4;
 					
