@@ -22,7 +22,7 @@ public class ParticleRing {
 		this.radius = radius;
 		this.speed = speed;
 		
-		for(int i = particles; i >= 0; i--) {
+		for(int i = particles; i > 0; i--) {
 			RingParticle rp = new RingParticle(this, anchor.handler, anchor.gridLoc, DungeonTile.SMALLBLUEPARTICLE);
 			anchor.handler.addGameObject(rp);
 		}
@@ -47,11 +47,17 @@ public class ParticleRing {
 		RingParticle rp = new RingParticle(this, anchor.handler, anchor.gridLoc, DungeonTile.SMALLBLUEPARTICLE);
 		anchor.handler.addGameObject(rp);
 		updateParticleSpread();
+		
 		updateParticles();
 	}
 	
 	public void removeParticle() {
-		
+		RingParticle rp = ringParticles.get(0);
+		anchor.handler.removeGameObject(rp);
+		ringParticles.remove(rp);
+
+		updateParticleSpread();
+		updateParticles();
 	}
 	
 	
@@ -64,7 +70,7 @@ public class ParticleRing {
 	
 	public void updateParticles() {
 		for(RingParticle rp : ringParticles) {
-			rp.updateTheta();
+			rp.updateTheta(ringParticles.get(0).getTheta());
 			rp.setLocation(rp.calculateParticlePosition());
 		}
 	}
@@ -79,10 +85,15 @@ public class ParticleRing {
 			this.parent = parent;
 			theta = parent.ringParticles.indexOf(this) * parent.getParticleSpread();
 			//System.out.println("THETA: "+theta);
+			this.setLocation(this.calculateParticlePosition());
 		}
 		
-		public void updateTheta() {
-			theta = parent.ringParticles.indexOf(this) * parent.getParticleSpread();
+		public void updateTheta(double startingTheta) {
+			theta = startingTheta + parent.ringParticles.indexOf(this) * parent.getParticleSpread();
+		}
+		
+		public double getTheta() {
+			return theta;
 		}
 		
 		@Override
@@ -104,12 +115,11 @@ public class ParticleRing {
 			double dist = this.getLoc().distance(target);
 			
 			//double alpha = 200 * handler.deltaTime() / dist;
-			double alpha = handler.deltaTime() * Math.sqrt(dist) + 0.01;
+			double alpha = handler.deltaTime() * Math.sqrt(dist);
 
-			
 			//System.out.println(alpha);
 			if(alpha > 1) alpha = 1;
-			
+
 			Vector2 newLoc = this.getLoc().lerp(target, alpha);
 			
 			return newLoc;
