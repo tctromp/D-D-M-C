@@ -12,7 +12,6 @@ public class ParticleRing {
 	private double speed;
 	private double radius;
 	
-	
 	private double particleSpread;
 	
 	public ParticleRing(GameObject anchor, int particles, double radius, double speed) {
@@ -29,18 +28,6 @@ public class ParticleRing {
 	}
 	
 	
-	public GameObject getAnchor() {
-		return anchor;
-	}
-	public double getParticleSpread() {
-		return particleSpread;
-	}
-	public double getRadius() {
-		return radius;
-	}
-	public double getSpeed() {
-		return speed;
-	}
 	
 	public void addParticle() {
 		addParticle(1);
@@ -55,6 +42,13 @@ public class ParticleRing {
 		}
 	}
 	
+	public void removeParticle(RingParticle particle) {
+		anchor.handler.removeGameObject(particle);
+		if(ringParticles.contains(particle)) ringParticles.remove(particle);
+		
+		updateParticleSpread();
+		updateParticles();
+	}
 	public void removeParticle() {
 		removeParticle(1);
 	}
@@ -63,10 +57,10 @@ public class ParticleRing {
 			RingParticle rp = ringParticles.get(0);
 			anchor.handler.removeGameObject(rp);
 			ringParticles.remove(rp);
-	
-			updateParticleSpread();
-			updateParticles();
 		}
+		
+		updateParticleSpread();
+		updateParticles();
 	}
 	
 	
@@ -80,7 +74,7 @@ public class ParticleRing {
 	public void updateParticles() {
 		for(RingParticle rp : ringParticles) {
 			rp.updateTheta(ringParticles.get(0).getTheta());
-			rp.setLocation(rp.calculateParticlePosition());
+			//rp.setLocation(rp.calculateParticlePosition());
 		}
 	}
 	
@@ -94,7 +88,7 @@ public class ParticleRing {
 			this.parent = parent;
 			theta = parent.ringParticles.indexOf(this) * parent.getParticleSpread();
 			//System.out.println("THETA: "+theta);
-			this.setLocation(this.calculateParticlePosition());
+			//this.setLocation(this.calculateParticlePosition());
 		}
 		
 		public void updateTheta(double startingTheta) {
@@ -133,6 +127,35 @@ public class ParticleRing {
 			
 			return newLoc;
 		}
+	}
+	
+	public GameObject getAnchor() {
+		return anchor;
+	}
+	public double getParticleSpread() {
+		return particleSpread;
+	}
+	public double getRadius() {
+		return radius;
+	}
+	public double getSpeed() {
+		return speed;
+	}
+	public ArrayList<RingParticle> getRingParticles() {
+		return this.ringParticles;
+	}
+	
+	public RingParticle getClosestParticle(Vector2 target) {
+		RingParticle closest = null;
+		
+		for(RingParticle rp : ringParticles) {
+			double dist = rp.getGridLoc().distance(target);
+			if(closest == null || dist <= closest.getGridLoc().distance(target)) {
+				closest = rp;
+			}
+		}
+		
+		return null;
 	}
 }
 

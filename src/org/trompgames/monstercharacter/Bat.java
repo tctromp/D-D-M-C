@@ -40,4 +40,10 @@ public class Bat extends MonsterCharacter{
 		System.out.println("Clicky bat");
 	}
 
+	@Override
+	public void useAbility() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import org.trompgames.mapeditor.MapEditor;
 import org.trompgames.objects.GameObject;
 import org.trompgames.objects.Tile;
+import org.trompgames.playercharacter.PlayerCharacter;
 import org.trompgames.swing.DDMCFrame;
 import org.trompgames.utils.Keyboard;
 import org.trompgames.utils.Mouse;
@@ -24,6 +25,7 @@ public class DDMCHandler {
 	private boolean debug = true;
 	private Tileset tileset;
 	
+	private PlayerCharacter selected;
 	
 	private ArrayList<GameObject> objects = new ArrayList<>();
 	
@@ -176,5 +178,13 @@ public class DDMCHandler {
 	
 	public int getGridHeight() {
 		return gridHeight;
+	}
+	
+	public void select(PlayerCharacter playerCharacter) {
+		selected = playerCharacter;
+	}
+	
+	public PlayerCharacter getSelected() {
+		return selected;
 	}
 }

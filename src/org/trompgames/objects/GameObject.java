@@ -71,6 +71,7 @@ public abstract class GameObject {
 	
 	public void setLocation(Vector2 loc) {
 		this.loc = loc;
+		//this.gridLoc = DDMCHandler.screenToGridCords(loc.getX(), loc.getY());
 	}
 	
 	public void setScale(double scale) {

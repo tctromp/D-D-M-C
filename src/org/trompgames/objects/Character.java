@@ -17,7 +17,7 @@ public abstract class Character extends GameObject{
 		// TODO Auto-generated constructor stub
 		
 		addMouseListener();
-
+		
 	}
 	
 	private void addMouseListener() {
@@ -30,7 +30,7 @@ public abstract class Character extends GameObject{
 				if(mouse.getGridLoc().equals(character.getGridLoc()))
 					onClick();
 			}
-
+			
 			@Override
 			public void onRelease(Mouse mouse) {
 				// TODO Auto-generated method stub
@@ -43,6 +43,8 @@ public abstract class Character extends GameObject{
 	}
 	
 	public abstract void onClick();
+	
+	public abstract void useAbility();
 
 	public int getHealth() {
 		return health;
