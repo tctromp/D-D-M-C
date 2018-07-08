@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.trompgames.ddmc.DDMCHandler;
 import org.trompgames.objects.DungeonTile;
+import org.trompgames.objects.Explosion;
 import org.trompgames.objects.GameObject;
 import org.trompgames.objects.Particle;
 import org.trompgames.objects.ParticleRing;
@@ -128,6 +129,11 @@ public class TestPlayerCharacter extends PlayerCharacter{
 	public void useAbility() {
 		System.out.println("Using ability");
 		
+		if(mana.getRingParticles().size() <= 0) {
+			System.out.println("Not enough mana!");
+			return;
+		}
+		
 		// just messing around with particles
 		RingParticle chosenOne = mana.getClosestParticle(handler.getMouse().getGridLoc());
 		// TODO why is chosenOne null
@@ -154,6 +160,15 @@ public class TestPlayerCharacter extends PlayerCharacter{
 				Vector2 newLoc = this.getLoc().lerp(target, alpha);
 				
 				this.setLocation(newLoc);
+				
+				
+				if(dist < 10) {
+					System.out.println("< 10 ");
+					Explosion exp = new Explosion(handler, DDMCHandler.screenToGridCords(this.getLoc()));
+					handler.addGameObject(exp);
+					handler.removeGameObject(this);
+				}
+				
 			}
 			
 		});

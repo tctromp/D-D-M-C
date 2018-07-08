@@ -116,8 +116,16 @@ public class DDMCHandler {
 		return new Vector2(OFFSET + x * TILEWIDTH * SCALE, OFFSET + y * TILEWIDTH * SCALE);
 	}
 	
+	public static Vector2 gridToScreenCords(Vector2 v) {
+		return gridToScreenCords(v.getX(), v.getY());
+	}
+	
 	public static Vector2 screenToGridCords(double x, double y) {
 		return new Vector2((int) ((x - OFFSET) / (TILEWIDTH * SCALE)), (int) ((y - OFFSET) / (TILEWIDTH * SCALE)));
+	}
+	
+	public static Vector2 screenToGridCords(Vector2 v) {
+		return screenToGridCords(v.getX(), v.getY());
 	}
 	
 	public void addGameObject(GameObject obj) {
