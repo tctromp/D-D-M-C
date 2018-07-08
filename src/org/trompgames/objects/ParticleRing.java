@@ -149,13 +149,13 @@ public class ParticleRing {
 		RingParticle closest = null;
 		
 		for(RingParticle rp : ringParticles) {
-			double dist = rp.getGridLoc().distance(target);
-			if(closest == null || dist <= closest.getGridLoc().distance(target)) {
+			double dist = rp.getLoc().distance(target);
+			if(closest == null || dist <= closest.getLoc().distance(target)) {
 				closest = rp;
 			}
 		}
 		
-		return null;
+		return closest;
 	}
 }
 

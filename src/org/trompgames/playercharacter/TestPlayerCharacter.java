@@ -135,17 +135,17 @@ public class TestPlayerCharacter extends PlayerCharacter{
 		}
 		
 		// just messing around with particles
-		RingParticle chosenOne = mana.getClosestParticle(handler.getMouse().getGridLoc());
+		RingParticle chosenOne = mana.getClosestParticle(handler.getMouse().getLoc());
 		// TODO why is chosenOne null
 		if(chosenOne == null) {
 			System.out.println("Chosen one is null");
 			chosenOne = mana.getRingParticles().get(0);
 		}
-		Vector2 location = DDMCHandler.screenToGridCords(chosenOne.calculateParticlePosition().getX(), chosenOne.calculateParticlePosition().getY());
+		Vector2 location = DDMCHandler.screenToGridCords(chosenOne.calculateParticlePosition());
 		mana.removeParticle(chosenOne);
 		
 		Particle particle = (new Particle(handler, location, DungeonTile.SMALLORANGEPARTICLE) {
-			Vector2 target = handler.getMouse().getLoc();
+			Vector2 target = handler.getMouse().getLoc().sub(4);
 			
 			@Override
 			public void update() {
@@ -162,9 +162,9 @@ public class TestPlayerCharacter extends PlayerCharacter{
 				this.setLocation(newLoc);
 				
 				
-				if(dist < 10) {
+				if(dist < 0.5) {
 					System.out.println("< 10 ");
-					Explosion exp = new Explosion(handler, DDMCHandler.screenToGridCords(this.getLoc()));
+					Explosion exp = new Explosion(handler, DDMCHandler.screenToGridCords(this.getLoc()), this.getLoc().sub(8 * 4));
 					handler.addGameObject(exp);
 					handler.removeGameObject(this);
 				}

@@ -38,6 +38,16 @@ public class Vector2 {
 		return this.add(v.mult(-1));
 	}
 	
+	public Vector2 sub(double a) {
+		return new Vector2(this.x - a, this.y - a);
+	}
+	
+	
+	public Vector2 add(double a) {
+		return new Vector2(this.x + a, this.y + a);
+	}
+	
+	
 	public Vector2 normalize() {
 		double dist = new Vector2(0, 0).distance(this);
 		return new Vector2(this.x / dist, this.y / dist);

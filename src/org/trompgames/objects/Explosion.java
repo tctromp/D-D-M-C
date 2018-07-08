@@ -25,8 +25,9 @@ public class Explosion extends Particle{
 		
 	}
 
-	public Explosion(DDMCHandler handler, Vector2 gridLoc) {
+	public Explosion(DDMCHandler handler, Vector2 gridLoc, Vector2 loc) {
 		super(handler, gridLoc, tiles.get(0));
+		this.setLocation(loc);
 		// TODO Auto-generated constructor stub
 	}
 	
