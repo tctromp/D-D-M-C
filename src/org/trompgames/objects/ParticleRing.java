@@ -42,22 +42,31 @@ public class ParticleRing {
 		return speed;
 	}
 	
-	
 	public void addParticle() {
-		RingParticle rp = new RingParticle(this, anchor.handler, anchor.gridLoc, DungeonTile.SMALLBLUEPARTICLE);
-		anchor.handler.addGameObject(rp);
-		updateParticleSpread();
-		
-		updateParticles();
+		addParticle(1);
+	}
+	public void addParticle(int amount) {
+		for(int i = amount; i > 0; i--) {
+			RingParticle rp = new RingParticle(this, anchor.handler, anchor.gridLoc, DungeonTile.SMALLBLUEPARTICLE);
+			anchor.handler.addGameObject(rp);
+			
+			updateParticleSpread();
+			updateParticles();
+		}
 	}
 	
 	public void removeParticle() {
-		RingParticle rp = ringParticles.get(0);
-		anchor.handler.removeGameObject(rp);
-		ringParticles.remove(rp);
-
-		updateParticleSpread();
-		updateParticles();
+		removeParticle(1);
+	}
+	public void removeParticle(int amount) {
+		for(int i = amount; i > 0; i--) {
+			RingParticle rp = ringParticles.get(0);
+			anchor.handler.removeGameObject(rp);
+			ringParticles.remove(rp);
+	
+			updateParticleSpread();
+			updateParticles();
+		}
 	}
 	
 	
